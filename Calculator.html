@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Calculator</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+
+            background: linear-gradient(135deg,
+                    #667eea,
+                    #764ba2,
+                    #6a11cb);
+        }
+
+        /* Background Effects */
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: .5;
+        }
+
+        .circle1 {
+            width: 250px;
+            height: 250px;
+            background: #00f5ff;
+            top: 10%;
+            left: 10%;
+        }
+
+        .circle2 {
+            width: 300px;
+            height: 300px;
+            background: #ff5e62;
+            bottom: 10%;
+            right: 10%;
+        }
+
+        /* Calculator */
+
+        .calculator {
+            width: 380px;
+
+            background: rgba(255, 255, 255, 0.12);
+
+            backdrop-filter: blur(15px);
+
+            border: 1px solid rgba(255, 255, 255, 0.2);
+
+            border-radius: 25px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, .25);
+
+            z-index: 10;
+        }
+
+        .calculator h2 {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Display */
+
+        #display {
+
+            width: 100%;
+            height: 75px;
+
+            border: none;
+
+            border-radius: 15px;
+
+            background: rgba(255, 255, 255, 0.18);
+
+            color: white;
+
+            text-align: right;
+
+            font-size: 32px;
+            font-weight: bold;
+
+            padding: 15px;
+
+            margin-bottom: 20px;
+
+            outline: none;
+
+            box-shadow:
+                inset 0 2px 8px rgba(0, 0, 0, .15);
+        }
+
+        /* Buttons */
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        button {
+
+            height: 65px;
+
+            border: none;
+
+            border-radius: 15px;
+
+            color: white;
+
+            font-size: 20px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: .3s;
+
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, .25),
+                    rgba(255, 255, 255, .15));
+
+            box-shadow:
+                0 4px 10px rgba(0, 0, 0, .15);
+        }
+
+        button:hover {
+
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, .25);
+        }
+
+        button:active {
+            transform: scale(.95);
+        }
+
+        /* Operator Buttons */
+
+        .operator {
+            background: linear-gradient(135deg,
+                    #ffb347,
+                    #ff8c42);
+        }
+
+        .operator:hover {
+            box-shadow:
+                0 0 20px rgba(255, 140, 66, .6);
+        }
+
+        /* Clear Button */
+
+        .clear {
+            background: linear-gradient(135deg,
+                    #ff6b6b,
+                    #ee5253);
+        }
+
+        .clear:hover {
+            box-shadow:
+                0 0 20px rgba(238, 82, 83, .6);
+        }
+
+        /* Equal Button */
+
+        .equal {
+            background: linear-gradient(135deg,
+                    #2ed573,
+                    #1dd1a1);
+        }
+
+        .equal:hover {
+            box-shadow:
+                0 0 20px rgba(46, 213, 115, .6);
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+        /* Mobile */
+
+        @media(max-width:450px) {
+
+            .calculator {
+                width: 95%;
+            }
+
+            button {
+                height: 55px;
+                font-size: 18px;
+            }
+
+            #display {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+
+    <div class="calculator">
+
+        <h2>Calculator</h2>
+
+        <input type="text" id="display" readonly>
+
+        <div class="buttons">
+
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button onclick="backspace()">⌫</button>
+            <button onclick="appendValue('%')">%</button>
+            <button class="operator" onclick="appendValue('/')">÷</button>
+
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button class="operator" onclick="appendValue('*')">×</button>
+
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button class="operator" onclick="appendValue('-')">−</button>
+
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button class="operator" onclick="appendValue('+')">+</button>
+
+            <button onclick="appendValue('0')">0</button>
+            <button onclick="appendValue('.')">.</button>
+
+            <button class="equal" style="grid-column:span 2;" onclick="calculate()">=</button>
+
+        </div>
+
+        <div class="footer">
+            Frontend Calculator Project
+        </div>
+
+    </div>
+
+    <script>
+
+        const display = document.getElementById("display");
+
+        function appendValue(value) {
+            display.value += value;
+        }
+
+        function clearDisplay() {
+            display.value = "";
+        }
+
+        function backspace() {
+            display.value = display.value.slice(0, -1);
+        }
+
+        function calculate() {
+
+            try {
+                display.value = eval(display.value);
+            }
+            catch {
+                display.value = "Error";
+            }
+        }
+
+        /* Keyboard Support */
+
+        document.addEventListener("keydown", (e) => {
+
+            if ("0123456789+-*/.%".includes(e.key)) {
+                display.value += e.key;
+            }
+
+            if (e.key === "Enter") {
+                calculate();
+            }
+
+            if (e.key === "Backspace") {
+                backspace();
+            }
+
+            if (e.key === "Escape") {
+                clearDisplay();
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

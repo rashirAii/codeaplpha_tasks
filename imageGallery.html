@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Image Gallery</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            padding: 30px;
+            background: linear-gradient(to right, #141e30, #243b55);
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #ddd;
+            margin-bottom: 25px;
+        }
+
+        /* Filter Buttons */
+
+        .filters {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .filters::after {
+            content: "";
+            display: block;
+            width: 120px;
+            height: 3px;
+            margin: 15px auto 0;
+            background: linear-gradient(90deg, #00c6ff, #ff5e62);
+            border-radius: 10px;
+        }
+
+        .filter-btn {
+            padding: 12px 25px;
+            margin: 8px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .3s;
+            box-shadow: 0 4px 12px rgba(0, 114, 255, .35);
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 114, 255, .5);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #ff9966, #ff5e62);
+            box-shadow: 0 5px 15px rgba(255, 94, 98, .5);
+        }
+
+        /* Gallery */
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 4px solid rgba(255, 255, 255, .7);
+            cursor: pointer;
+            transition: .4s;
+            animation: fadeIn .8s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.06);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .4);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Lightbox */
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .95);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .lightbox img {
+            width: 75%;
+            max-width: 900px;
+            max-height: 80%;
+            border-radius: 15px;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: white;
+            font-size: 50px;
+            cursor: pointer;
+        }
+
+        .prev,
+        .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 55px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .prev {
+            left: 20px;
+        }
+
+        .next {
+            right: 20px;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #ddd;
+        }
+
+        @media(max-width:768px) {
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .lightbox img {
+                width: 90%;
+            }
+
+            .prev,
+            .next {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Responsive Image Gallery</h1>
+
+        <p class="subtitle">
+            Explore beautiful Nature, City and Animal photographs.
+        </p>
+
+        <div class="filters">
+
+            <button class="filter-btn active" onclick="filterImages('all',this)">All</button>
+
+            <button class="filter-btn" onclick="filterImages('nature',this)">Nature</button>
+
+            <button class="filter-btn" onclick="filterImages('city',this)">City</button>
+
+            <button class="filter-btn" onclick="filterImages('animals',this)">Animals</button>
+
+        </div>
+
+        <div class="gallery">
+
+            <!-- Nature -->
+            <img src="https://picsum.photos/id/1015/400/300" class="nature" onclick="openLightbox(0)">
+            <img src="https://picsum.photos/id/1016/400/300" class="nature" onclick="openLightbox(1)">
+            <img src="https://picsum.photos/id/1020/400/300" class="nature" onclick="openLightbox(2)">
+            <img src="https://picsum.photos/id/1039/400/300" class="nature" onclick="openLightbox(3)">
+
+            <!-- City -->
+            <img src="https://picsum.photos/id/1011/400/300" class="city" onclick="openLightbox(4)">
+            <img src="https://picsum.photos/id/1012/400/300" class="city" onclick="openLightbox(5)">
+            <img src="https://picsum.photos/id/1043/400/300" class="city" onclick="openLightbox(6)">
+            <img src="https://picsum.photos/id/1060/400/300" class="city" onclick="openLightbox(7)">
+
+            <!-- Animals -->
+            <img src="https://picsum.photos/id/237/400/300" class="animals" onclick="openLightbox(8)">
+            <img src="https://picsum.photos/id/433/400/300" class="animals" onclick="openLightbox(9)">
+            <img src="https://picsum.photos/id/593/400/300" class="animals" onclick="openLightbox(10)">
+            <img src="https://picsum.photos/id/659/400/300" class="animals" onclick="openLightbox(11)">
+
+        </div>
+
+        <footer>
+            <p>Created by Rashi Rai | Frontend Development Project</p>
+        </footer>
+
+    </div>
+
+    <div class="lightbox" id="lightbox">
+
+        <span class="close" onclick="closeLightbox()">&times;</span>
+
+        <span class="prev" onclick="changeImage(-1)">❮</span>
+
+        <img id="lightbox-img">
+
+        <span class="next" onclick="changeImage(1)">❯</span>
+
+    </div>
+
+    <script>
+
+        const images = document.querySelectorAll(".gallery img");
+        const lightbox = document.getElementById("lightbox");
+        const lightboxImg = document.getElementById("lightbox-img");
+
+        let currentIndex = 0;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            lightbox.style.display = "flex";
+            lightboxImg.src = images[index].src;
+        }
+
+        function closeLightbox() {
+            lightbox.style.display = "none";
+        }
+
+        function changeImage(step) {
+            currentIndex =
+                (currentIndex + step + images.length) % images.length;
+
+            lightboxImg.src = images[currentIndex].src;
+        }
+
+        function filterImages(category, button) {
+
+            images.forEach(img => {
+
+                if (category === "all" ||
+                    img.classList.contains(category)) {
+                    img.style.display = "block";
+                } else {
+                    img.style.display = "none";
+                }
+
+            });
+
+            document
+                .querySelectorAll(".filter-btn")
+                .forEach(btn => btn.classList.remove("active"));
+
+            button.classList.add("active");
+        }
+
+        document.addEventListener("keydown", (e) => {
+
+            if (lightbox.style.display === "flex") {
+
+                if (e.key === "ArrowRight") {
+                    changeImage(1);
+                }
+
+                if (e.key === "ArrowLeft") {
+                    changeImage(-1);
+                }
+
+                if (e.key === "Escape") {
+                    closeLightbox();
+                }
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
